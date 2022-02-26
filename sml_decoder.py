@@ -68,7 +68,7 @@ class TasmotaSMLParser:
             precision = 0
 
         try:
-            human_readable = f"{msg.value * pow(10, msg.scaler)}{unit} ({name})"
+            human_readable = f"{round(msg.value * pow(10, msg.scaler), precision)}{unit} ({name})"
         except TypeError:
             if msg.unit in UNITS and msg.name in OBIS_NAMES:
                 human_readable = f"{msg.value}{unit} ({name})"
