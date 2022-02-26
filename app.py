@@ -10,7 +10,6 @@ import json
 app = Flask(__name__)
 Bootstrap(app)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
-app.debug = False
 nav = Nav()
 nav.init_app(app)
 nav.register_element("frontend_top", Navbar(View("Tasmota SML Decoder", ".index")))
@@ -27,6 +26,7 @@ def decode():
         return redirect("/")
     elif request.method == "POST":
         data = request.form["smldump"].splitlines()
+        data = [x.strip() for x in data]
 
         tas = TasmotaSMLParser()
         msgs = tas.decode_messages(data)
@@ -43,9 +43,10 @@ def decode():
             "decode.html",
             smldump=data,
             parse_errors=tas.parse_errors,
+            obis_errors=tas.obis_errors,
             messages=messages,
         )
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

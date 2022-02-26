@@ -27,7 +27,7 @@
       <p><p>
     </div>
     <div>
-{% if messages | length > 0 %}
+{% if messages | length > 0 %}
       <h2>Dekodierte SML Nachrichten</h2>
       <table class="table table-striped">
         <thead class="thead-light">
@@ -47,7 +47,7 @@
             <td>{{ msg.msg.obis_short }}</td>
             <td>{{ msg.msg.name }}</td>
             <td>{{ msg.msg.value}}</td>
-            <td>{{ msg.msg.unit }}</td>
+            <td>{{ msg.msg.unit }}</td>
             <td>{{ msg.msg.human_readable }}</td>
           </tr>
 {%- endfor %}
@@ -62,13 +62,19 @@
 {% endfor -%}</pre>
 {% endif %}
       <hr>
+{% if obis_errors | length > 0 %}
+      <h2>Parsing Fehler</h2>
+      <pre>{% for error in obis_errors -%}
+        <span class="parser-error">{{ error.hex.decode('utf-8') }}</span>: {{ error.msg }}
+{% endfor -%}</pre>
+{% endif %}
       <h2>Empfangene Daten</h2>
       Folgende Daten wurden empfangen.
       <pre>{% for line in smldump -%}
 {% if line in parse_errors -%}
-        <span class="parser-error">{{ line }}</span>
+        <span class="parser-error">{{ line | e }}</span>
 {% else -%}
-        <span class="parser-success">{{ line }}</span>
+        <span class="parser-success">{{ line | e }}</span>
 {% endif -%}
 {% endfor -%}</pre>
     </div>

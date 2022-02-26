@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from binascii import a2b_hex
+from binascii import a2b_hex, b2a_hex
 from smllib.sml_frame import SmlFrame
 from smllib.const import OBIS_NAMES, UNITS
+from pprint import pprint
 
 file = "test-data.txt"
 
@@ -15,10 +16,10 @@ class TasmotaSMLParser:
 
     def parse_input(self, input):
         """Parse a line into a frame"""
-        if " : 77 " in input:
+        if " : 77 " in input.strip():
             # Remove the spaces and return a bytestring
             frame = a2b_hex("".join((input.split(" : ", 1)[1]).split()))
-        elif input.startswith("77 0"):
+        elif input.startswith("77 "):
             frame = a2b_hex("".join(input.split()))
         else:
             self.parse_errors.append(input)
@@ -32,8 +33,10 @@ class TasmotaSMLParser:
             msgs = f.get_obis()
             if len(msgs) == 0:
                 return False
-        except:
-            self.obis_errors.append(frame)
+        except Exception as e:
+            self.obis_errors.append(
+                {"frame": frame, "hex": b2a_hex(frame, b" "), "msg": e.args[0]}
+            )
             return None
         return msgs
 
@@ -68,7 +71,9 @@ class TasmotaSMLParser:
             precision = 0
 
         try:
-            human_readable = f"{round(msg.value * pow(10, msg.scaler), precision)}{unit} ({name})"
+            human_readable = (
+                f"{round(msg.value * pow(10, msg.scaler), precision)}{unit} ({name})"
+            )
         except TypeError:
             if msg.unit in UNITS and msg.name in OBIS_NAMES:
                 human_readable = f"{msg.value}{unit} ({name})"
@@ -116,6 +121,9 @@ def main():
             print("Tasmota SML Script meter definition:")
             print(tas.build_meter_def(msg))
             print(80 * "#")
+
+    if len(tas.obis_errors) > 0:
+        pprint(tas.obis_errors)
 
 
 if __name__ == "__main__":
