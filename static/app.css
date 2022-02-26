@@ -1,0 +1,17 @@
+.jumbotron {
+    margin-top: 1em;
+}
+
+.parser-error {
+    color: red;
+}
+
+.parser-success {
+    color: green;
+}
+
+footer {
+    border-top: 1px solid black;
+    margin: 5em;
+    margin-top: 2em;
+}

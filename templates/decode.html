@@ -1,0 +1,76 @@
+{# This simple template derives from ``base.html``. See ``base.html`` for
+   more information about template inheritance. #}
+{%- extends "base.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+
+
+{# Inside the ``content`` is where you should place most of your own stuff.
+   This will keep scripts at the page end and a navbar you add on later
+   intact. #}
+{% block content %}
+  <div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+  {%- if messages %}
+    <div class="row">
+      <div class="col-md-12">
+        {{utils.flashed_messages(messages)}}
+      </div>
+    </div>
+  {%- endif %}
+  {%- endwith %}
+    <div class="jumbotron">
+      <h1>Tasmota SML Dekoder</h1>
+      <p><p>
+    </div>
+    <div>
+{% if messages | length > 0 %}
+      <h2>Dekodierte SML Nachrichten</h2>
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">OBIS (hex)</th>
+            <th scope="col">OBIS</th>
+            <th scope="col">Name</th>
+            <th scope="col">Wert</th>
+            <th scope="col">Einheit</th>
+            <th scope="col">Parsed</th>
+          </tr>
+        </thead>
+        <tbody>
+{%- for msg in messages %}
+          <tr>
+            <td>0x{{ msg.msg.obis }}</td>
+            <td>{{ msg.msg.obis_short }}</td>
+            <td>{{ msg.msg.name }}</td>
+            <td>{{ msg.msg.value}}</td>
+            <td>{{ msg.msg.unit }}</td>
+            <td>{{ msg.msg.human_readable }}</td>
+          </tr>
+{%- endfor %}
+        </tbody>
+      </table>
+      <h2>Tasmota Meter Definition</h2>
+      <p>Aufgrund der erkannten SML Elemente wäre dies ein Vorschlag für eine Tasmota Meter Definition.</p>
+      <pre>M 1
++1,3,s,0,9600,
+{% for msg in messages -%}
+        {{ msg.tas }}
+{% endfor -%}</pre>
+{% endif %}
+      <hr>
+      <h2>Empfangene Daten</h2>
+      Folgende Daten wurden empfangen.
+      <pre>{% for line in smldump -%}
+{% if line in parse_errors -%}
+        <span class="parser-error">{{ line }}</span>
+{% else -%}
+        <span class="parser-success">{{ line }}</span>
+{% endif -%}
+{% endfor -%}</pre>
+    </div>
+   </div>
+{%- endblock %}

@@ -1,0 +1,7 @@
+Flask==2.0.3
+Flask-Bootstrap==3.3.7.1
+flask-nav==0.6
+#smllib==1.1
+# SML Lib with grid freq and current power
+git+https://github.com/spacemanspiff2007/SmlLib.git@3d4a106#egg=smllib
+
