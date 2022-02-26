@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
 from sml_decoder import TasmotaSMLParser
-from pprint import pprint
+import json
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -37,7 +37,7 @@ def decode():
             messages.append({"msg": details, "tas": tasmota_script})
 
         messages = sorted(messages, key=lambda x: x["msg"]["obis"])
-        pprint(messages)
+        print(json.dumps(messages))
 
         return render_template(
             "decode.html",
