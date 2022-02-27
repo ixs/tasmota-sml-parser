@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from binascii import a2b_hex, b2a_hex
+import binascii
 from smllib.sml_frame import SmlFrame
 from smllib.const import OBIS_NAMES, UNITS
 from pprint import pprint
@@ -18,9 +18,18 @@ class TasmotaSMLParser:
         """Parse a line into a frame"""
         if " : 77 " in input.strip():
             # Remove the spaces and return a bytestring
-            frame = a2b_hex("".join((input.split(" : ", 1)[1]).split()))
+            try:
+                frame = binascii.a2b_hex("".join((input.split(" : ", 1)[1]).split()))
+            except binascii.Error:
+                self.parse_errors.append(input)
+                return
+
         elif input.startswith("77 "):
-            frame = a2b_hex("".join(input.split()))
+            try:
+                frame = binascii.a2b_hex("".join(input.split()))
+            except binascii.Error:
+                self.parse_errors.append(input)
+                return
         else:
             self.parse_errors.append(input)
             return
@@ -35,7 +44,7 @@ class TasmotaSMLParser:
                 return False
         except Exception as e:
             self.obis_errors.append(
-                {"frame": frame, "hex": b2a_hex(frame, b" "), "msg": e.args[0]}
+                {"frame": frame, "hex": binascii.b2a_hex(frame, b" "), "msg": e.args[0]}
             )
             return None
         return msgs
