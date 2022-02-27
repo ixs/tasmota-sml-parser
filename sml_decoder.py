@@ -44,7 +44,7 @@ class TasmotaSMLParser:
                 return False
         except Exception as e:
             self.obis_errors.append(
-                {"frame": frame, "hex": binascii.b2a_hex(frame, b" "), "msg": e.args[0]}
+                {"frame": frame, "hex": binascii.b2a_hex(frame, b" "), "msg": e}
             )
             return None
         return msgs
