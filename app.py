@@ -38,9 +38,6 @@ nav.register_element("frontend_top", Navbar(View("Tasmota SML Decoder", ".index"
 
 @app.route("/")
 def index():
-    logger.info(
-        f'{request.remote_addr} - - - "{request.method} {request.path} {request.scheme}"'
-    )
     return render_template("index.html")
 
 
