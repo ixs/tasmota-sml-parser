@@ -84,12 +84,16 @@ class TasmotaSMLParser:
                 f"{round(msg.value * pow(10, msg.scaler), precision)}{unit} ({name})"
             )
         except TypeError:
-            if msg.unit in UNITS and msg.name in OBIS_NAMES:
+            try:
                 human_readable = f"{msg.value}{unit} ({name})"
-            elif msg.unit in UNITS and msg.name not in OBIS_NAMES:
-                human_readable = f"{msg.value}{unit}"
-            else:
-                human_readable = f"{msg.value}"
+            except:
+                try:
+                    human_readable = f"{msg.value}{unit}"
+                except:
+                    try:
+                        human_readable = f"{msg.value}"
+                    except:
+                        human_readable = ""
 
         data = {
             "obis": msg.obis,
