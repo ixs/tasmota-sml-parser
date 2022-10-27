@@ -138,6 +138,9 @@ def main():
     if len(tas.obis_errors) > 0:
         pprint(tas.obis_errors)
 
+    if len(tas.parse_errors) > 0:
+        pprint(tas.parse_errors)
+
 
 if __name__ == "__main__":
     main()
