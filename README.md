@@ -3,4 +3,4 @@ Webapp to conveniently parse Tasmota SML Dump output and display the actual data
 
 Makes building a Tasmota SML Script much easier.
 
-Online Demo is at https://tasmota-sml-parser.azurewebsites.net/.
+Online Demo is at https://tasmota-sml-parser.dicp.net/.
