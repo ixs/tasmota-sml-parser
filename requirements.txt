@@ -1,6 +1,6 @@
-Flask==2.0.3
+Flask==2.2.5
 Flask-Bootstrap==3.3.7.1
 flask-nav==0.6
 smllib==1.2
-git+https://github.com/census-instrumentation/opencensus-python/@refs/pull/1072/merge#subdirectory=contrib/opencensus-ext-flask
+opencensus-python
 opencensus-ext-azure
