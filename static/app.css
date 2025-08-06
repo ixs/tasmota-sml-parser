@@ -10,6 +10,20 @@
     color: green;
 }
 
+.navbar-custom {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.navbar-custom .navbar-brand {
+    color: #6c757d !important;
+    text-decoration: none;
+}
+
+.navbar-custom .navbar-brand:hover {
+    color: #495057 !important;
+}
+
 footer {
     border-top: 1px solid #ccc;
     margin: 10em;
