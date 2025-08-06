@@ -2,8 +2,6 @@
 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
-from flask_nav import Nav
-from flask_nav.elements import Navbar, View
 from sml_decoder import TasmotaSMLParser
 import logging
 import json
@@ -17,28 +15,25 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 
 # Check if running on Azure AppService
 if os.getenv("ORYX_ENV_TYPE") == "AppService":
-    from opencensus.ext.azure.log_exporter import AzureLogHandler
-    from opencensus.ext.flask.flask_middleware import FlaskMiddleware
-
-    logger.addHandler(AzureLogHandler())
-    middleware = FlaskMiddleware(app, excludelist_paths=[])
+    from azure.monitor.opentelemetry import configure_azure_monitor
+    from opentelemetry.instrumentation.flask import FlaskInstrumentor
+    
+    configure_azure_monitor(logger_name="tasmota-sml-parser")
+    FlaskInstrumentor().instrument_app(app)
+    logger = logging.getLogger("tasmota-sml-parser")
+    logger.setLevel(logging.DEBUG)
 else:
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-app = Flask(__name__)
 Bootstrap(app)
-app.config["BOOTSTRAP_SERVE_LOCAL"] = True
-nav = Nav()
-nav.init_app(app)
-nav.register_element("frontend_top", Navbar(View("Tasmota SML Decoder", ".index")))
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", navbar_title="Tasmota SML Decoder")
 
 
 @app.route("/decode", methods=["POST", "GET"])
@@ -77,6 +72,7 @@ def decode():
             parse_errors=tas.parse_errors,
             obis_errors=tas.obis_errors,
             messages=messages,
+            navbar_title="Tasmota SML Decoder",
         )
 
 

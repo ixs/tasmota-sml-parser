@@ -1,7 +1,8 @@
-Flask==2.2.5
-Flask-Bootstrap==3.3.7.1
-flask-nav==0.6
+
+Flask==3.1.1
 smllib==1.7
-opencensus
-opencensus-ext-azure
-opencensus-ext-flask
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation-flask
+azure-monitor-opentelemetry==1.6.8
+Flask-Bootstrap4==4.0.2
