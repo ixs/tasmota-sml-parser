@@ -1,7 +1,8 @@
 BRANCH := $(shell git branch --show-current)
 
 venv:
-	pyenv exec python3 -mvenv venv
+	rm -rf venv
+	pyenv exec python -mvenv venv
 	./venv/bin/pip install -r requirements.txt
 
 # Test targets
