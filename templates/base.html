@@ -14,21 +14,6 @@
    In our sample app, we will most likely just opt not to change it #}
 {% block title %}Tasmota SML Decoder{% endblock %}
 
-{# While we are at it, we also enable fixes for legacy browsers. First we
-   import the necessary macros: #}
-{% import "bootstrap/fixes.html" as fixes %}
-
-{# Then, inside the head block, we apply these. To not replace the header,
-   ``super()`` is used: #}
-
-{% block head %}
-   {{super()}}
-
-{#- Docs: http://pythonhosted.org/Flask-Bootstrap/macros.html#fixes
-   The sample application already contains the required static files. #}
-{{fixes.ie8()}}
-{%- endblock %}
-
 {# Adding our own CSS files is also done here. Check the documentation at
    http://pythonhosted.org/Flask-Bootstrap/basic-usage.html#available-blocks
    for an overview. #}
@@ -43,22 +28,16 @@
 
 {# Finally, round things out with navigation #}
 {% block navbar %}
-{{nav.frontend_top.render()}}
+<nav class="navbar navbar-expand-lg navbar-custom mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">{{ navbar_title or "Tasmota SML Decoder" }}</a>
+  </div>
+</nav>
 {% endblock %}
-
-{#
-   {%- block content %}
-{{ super() }}
-{%- block footer %}
-<footer>&copy; 2022 <a href="https://github.com/ixs/tasmota-sml-parser/">Andreas Thienemann</a></footer>
-{%- endblock footer %}
-{%- endblock content %}
-#}
-
 
 {%- block body %}
 {{ super() }}
 {%- block footer %}
-<footer>&copy; 2022 <a href="https://github.com/ixs/tasmota-sml-parser/">Andreas Thienemann</a></footer>
+<footer class="text-center mt-4">&copy; 2022 - 2025 <a href="https://github.com/ixs/tasmota-sml-parser/">Andreas Thienemann</a></footer>
 {%- endblock footer %}
 {%- endblock body %}
