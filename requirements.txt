@@ -4,3 +4,4 @@ flask-nav==0.6
 smllib==1.7
 opencensus
 opencensus-ext-azure
+opencensus-ext-flask
