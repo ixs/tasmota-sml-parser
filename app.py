@@ -16,21 +16,12 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 # Check if running on Azure AppService
 if os.getenv("ORYX_ENV_TYPE") == "AppService":
     from azure.monitor.opentelemetry import configure_azure_monitor
+    from opentelemetry.instrumentation.flask import FlaskInstrumentor
     
-    configure_azure_monitor()
-    
-    # Custom logger for Azure
-    from azure.monitor.opentelemetry.exporter import AzureMonitorLogExporter
-    from opentelemetry._logs import set_logger_provider
-    from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
-    from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
-    
-    set_logger_provider(LoggerProvider())
-    exporter = AzureMonitorLogExporter()
-    logger_provider = set_logger_provider(LoggerProvider())
-    logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
-    handler = LoggingHandler()
-    logger.addHandler(handler)
+    configure_azure_monitor(logger_name="tasmota-sml-parser")
+    FlaskInstrumentor().instrument_app(app)
+    logger = logging.getLogger("tasmota-sml-parser")
+    logger.setLevel(logging.DEBUG)
 else:
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
@@ -38,10 +29,6 @@ else:
     logger.addHandler(ch)
 
 Bootstrap(app)
-
-# Initialize OpenTelemetry Flask instrumentation
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-FlaskInstrumentor().instrument_app(app)
 
 
 @app.route("/")
