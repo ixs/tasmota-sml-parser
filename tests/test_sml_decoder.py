@@ -39,7 +39,7 @@ class TestSMLDecoder(unittest.TestCase):
     def test_decode_frame_valid(self):
         """Test decoding a valid SML frame"""
         # Valid SML frame from test data
-        hex_data = "770701006005000ff010101016500001c8104010101016333140076040000036200620072650000020171"
+        hex_data = "77070100600500ff0101010165001c81040101016333140076040000036200620072650000020171"
         frame = bytes.fromhex(hex_data)
         result = self.parser.decode_frame(frame)
         # Result can be None, False, or a list of messages depending on frame content
