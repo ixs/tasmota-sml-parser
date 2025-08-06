@@ -1,6 +1,6 @@
 Flask==2.2.5
 Flask-Bootstrap==3.3.7.1
 flask-nav==0.6
-smllib==1.2
+smllib==1.7
 opencensus
 opencensus-ext-azure
