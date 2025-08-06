@@ -1,19 +1,11 @@
 BRANCH := $(shell git branch --show-current)
-PYTHON_VERSION := $(shell python --version 2>&1 | cut -d' ' -f2 | cut -d'.' -f1,2)
 
-check-python:
-	@echo "Current Python version: $(PYTHON_VERSION)"
-	@if [ "$(PYTHON_VERSION)" != "3.9" ] && [ "$(BRANCH)" = "master" ]; then \
-		echo "Warning: Master branch only supports Python 3.9. Current version: $(PYTHON_VERSION)"; \
-		echo "For Python 3.10+ support, checkout branch: 10-update-to-python-313"; \
-	fi
-
-venv: check-python
+venv:
 	pyenv exec python3 -mvenv venv
 	./venv/bin/pip install -r requirements.txt
 
 # Test targets
-test-deps: check-python
+test-deps:
 	pip install -r requirements-test.txt
 
 test: test-deps
@@ -57,4 +49,4 @@ dev-deploy:
 prod-deploy:
 	git push azure-prod $(BRANCH):master
 
-.PHONY: venv check-python test test-deps test-unit test-integration test-functional test-performance test-coverage test-lint test-quick install-dev clean-test dev-deploy prod-deploy
+.PHONY: venv test test-deps test-unit test-integration test-functional test-performance test-coverage test-lint test-quick install-dev clean-test dev-deploy prod-deploy

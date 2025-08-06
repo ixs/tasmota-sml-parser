@@ -8,8 +8,7 @@ Online Demo is at https://tasmota-sml-parser.dicp.net/.
 ## Development
 
 ### Requirements
-- Python 3.9 (current master branch)
-  - **Note**: Python 3.10+ support is available in the `10-update-to-python-313` branch
+- Python 3.9 - 3.13
 - Flask
 - smllib
 
@@ -18,9 +17,6 @@ Online Demo is at https://tasmota-sml-parser.dicp.net/.
 # Clone repository
 git clone https://github.com/ixs/tasmota-sml-parser.git
 cd tasmota-sml-parser
-
-# For Python 3.10+ support, checkout the update branch:
-# git checkout 10-update-to-python-313
 
 # Create virtual environment
 make venv

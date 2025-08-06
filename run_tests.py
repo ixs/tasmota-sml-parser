@@ -9,29 +9,6 @@ import sys
 import argparse
 import os
 
-def check_python_version():
-    """Check if we're running on a compatible Python version"""
-    version = sys.version_info
-    current_version = f"{version.major}.{version.minor}"
-    
-    # Check git branch
-    try:
-        result = subprocess.run(['git', 'branch', '--show-current'], 
-                              capture_output=True, text=True, check=True)
-        current_branch = result.stdout.strip()
-    except:
-        current_branch = "unknown"
-    
-    if current_branch == "master" and version[:2] != (3, 9):
-        print(f"⚠️  Warning: Master branch only supports Python 3.9")
-        print(f"   Current version: {current_version}")
-        print(f"   For Python 3.10+ support, checkout branch: 10-update-to-python-313")
-        print()
-    elif current_branch == "10-update-to-python-313" and version[:2] < (3, 9):
-        print(f"⚠️  Warning: Python 3.13 branch requires Python 3.9+")
-        print(f"   Current version: {current_version}")
-        print()
-
 def run_command(cmd, description):
     """Run a command and handle errors"""
     print(f"\n{'='*60}")
@@ -48,8 +25,6 @@ def run_command(cmd, description):
         return True
 
 def main():
-    check_python_version()
-    
     parser = argparse.ArgumentParser(description="Test runner for Tasmota SML Parser")
     parser.add_argument("--unit", action="store_true", help="Run unit tests only")
     parser.add_argument("--integration", action="store_true", help="Run integration tests only")
